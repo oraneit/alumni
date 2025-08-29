@@ -1,19 +1,22 @@
-{% macro render_field(field, **kwargs) -%}
-  <div class="mb-2">
-    <label class="form-label">{{ field.label.text }}</label>
-    {{ field(class="form-control", **kwargs) }}
+{% macro render_field(field) -%}
+  {# Any extra keyword args passed to the macro live in the special "kwargs" dict #}
+  {% set attrs = kwargs or {} %}
+  <div class="mb-3">
+    {{ field.label(class="form-label") }}
+    {{ field(**attrs) }}
     {% if field.errors %}
-      <div class="text-danger small">{{ field.errors[0] }}</div>
+      <div class="text-danger small">{{ field.errors|join(', ') }}</div>
     {% endif %}
   </div>
 {%- endmacro %}
 
 {% macro render_check(field) -%}
-  <div class="form-check">
-    {{ field(class="form-check-input") }}
-    <label class="form-check-label">{{ field.label.text }}</label>
+  {% set attrs = kwargs or {} %}
+  <div class="form-check mb-3">
+    {{ field(**attrs) }}
+    {{ field.label(class="form-check-label") }}
     {% if field.errors %}
-      <div class="text-danger small">{{ field.errors[0] }}</div>
+      <div class="text-danger small">{{ field.errors|join(', ') }}</div>
     {% endif %}
   </div>
 {%- endmacro %}
